@@ -9,11 +9,14 @@ parser=argparse.ArgumentParser(description="Takes a wav file and sets channel 1 
 parser.add_argument('-i', '--infile', help='WAV file to read from', required=True)
 parser.add_argument('-o', '--outfile', help='WAV file to write to', required=True)
 parser.add_argument('-s', '--stats', help='Displays some stats', action='store_true')
+parser.add_argument('-t', '--timespace', help='sample spacing', type=int, default=34)
 
 args = vars(parser.parse_args())
 
 inFile = args['infile']
 outFile = args['outfile']
+# timeSpace is the number of samples between changes
+timeSpace = args['timespace']
 
 if  os.path.isfile(inFile) == False:
 	print "Please give a file to process."
@@ -38,8 +41,8 @@ for x in range(0, len(snd)):
 		cstate = 0
 	if cstate != state:
 		if args['stats']:
-			statediv = (statecount / 35)
-			#print "State switch at", x , state , "->" , cstate, "time since last switch", statecount, statediv
+			statediv = (statecount / timeSpace)
+			print "State switch at", x , state , "->" , cstate, "samples since last switch", statecount, statediv
 			print str(state) * statediv
 		state = cstate
 		statecount = 0
