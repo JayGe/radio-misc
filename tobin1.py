@@ -23,7 +23,7 @@ if  os.path.isfile(inFile) == False:
 	exit(0)
 
 (sampFreq, snd) = wavfile.read(inFile)
-snd = snd / (2.**15)
+snd = snd / (2.**15) # convert to -1 to 1 
 
 state = 0
 statecount = 0
