@@ -9,7 +9,7 @@ parser=argparse.ArgumentParser(description="Takes a wav file and sets channel 1 
 parser.add_argument('-i', '--infile', help='WAV file to read from', required=True)
 parser.add_argument('-o', '--outfile', help='WAV file to write to', required=True)
 parser.add_argument('-s', '--stats', help='Displays some stats', action='store_true')
-parser.add_argument('-r', '--resize', help='Resize x channel', action='store_true')
+parser.add_argument('-r', '--resize', help='Resize x channel to try and evenly space', action='store_true')
 parser.add_argument('-t', '--timespace', help='sample spacing, default 34', type=int, default=34)
 
 args = vars(parser.parse_args())
@@ -51,14 +51,13 @@ for x in range(0, len(snd)):
 			statediv = (statecount / timeSpace) # work out the number of samples that fit in to the statecount
 			print "State switch at", x , state , "->" , cstate, "samples since last switch", statecount, "possible count", statediv
 			binsection = str(state) * statediv # guessed number of 1/0
-#			print binsection		
 			binfull += binsection # add to basic ook tracker
 
 		if args['resize']:
 			if state == 1: # sed peak/trough to be something more readable than 1 0 
-				peaktrough = 0.9
+				peaktrough = peak
 			else:
-				peaktrough = -0.9
+				peaktrough = trough
 			if statecount > 30: # if the count is ofer 30, set it to 40
 				nposition = wstate+40
 				for y in range(wstate,nposition):
