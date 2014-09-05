@@ -1,10 +1,12 @@
 #!/usr/bin/env python
+# JayGe - script to take a wav file  and do a few things to it
+# intented for use with OOK radio captures
 
 import argparse
 import os.path
 from scipy.io import wavfile
 
-parser=argparse.ArgumentParser(description="Takes a wav file and sets channel 1 to 1 or 0")
+parser = argparse.ArgumentParser(description="Takes a wav file and sets channel 1 to 1 or 0")
 
 parser.add_argument('-i', '--infile', help='WAV file to read from', required=True)
 parser.add_argument('-o', '--outfile', help='WAV file to write to', required=True)
@@ -19,7 +21,7 @@ outFile = args['outfile']
 # timeSpace is the number of samples between changes
 timeSpace = args['timespace']
 
-if  os.path.isfile(inFile) == False:
+if os.path.isfile(inFile) == False:
 	print "Please give a file to process."
 	exit(0)
 
@@ -54,11 +56,11 @@ for x in range(0, len(snd)):
 			binfull += binsection # add to basic ook tracker
 
 		if args['resize']:
-			if state == 1: # sed peak/trough to be something more readable than 1 0 
+			if state == 1: # set peak/trough to be something more readable than 1 0 
 				peaktrough = peak
 			else:
 				peaktrough = trough
-			if statecount > 30: # if the count is ofer 30, set it to 40
+			if statecount > 30: # if the count is > 30, set it to 40
 				nposition = wstate+40
 				for y in range(wstate,nposition):
 					snd[y][0] = peaktrough
