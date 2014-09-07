@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-# JayGe - script to do some counting
-# add channel option 
+# JayGe - script to do some counting without manipulating
 
 import argparse
 import os.path
@@ -10,8 +9,10 @@ parser = argparse.ArgumentParser(description="Takes a wav file and does some cou
 
 parser.add_argument('-i', '--infile', help='WAV file to read from', required=True)
 parser.add_argument('-s', '--stats', help='print basic stats', action='store_true')
-parser.add_argument('-t', '--timespace', help='sample spacing for estimating counts length (34)', nargs='?', const=34, type=int)
-parser.add_argument('-c', '--channel', help='channel 0 or 1, 0 default', nargs='?', const=0, type=int)
+parser.add_argument('-m', '--manc', help='print manchester guess', action='store_true')
+parser.add_argument('-t', '--timespace', help='sample spacing for estimating counts or manc spacing, default 34', nargs='?', const=34, type=int)
+parser.add_argument('-o', '--offset', help='manchester encoding offset, default 10', nargs='?', const=10, type=int)
+parser.add_argument('-c', '--channel', help='channel 0 or 1, default 0', nargs='?', const=0, type=int)
 
 args = vars(parser.parse_args())
 
@@ -19,6 +20,7 @@ inFile = args['infile']
 # timeSpace is the number of samples between changes
 timeSpace = args['timespace']
 channel = args['channel']
+offset = args['offset']
 
 if os.path.isfile(inFile) == False:
 	print "Please give a file to process."
@@ -29,7 +31,6 @@ snd = snd / (2.**15) # convert to -1 to 1
 
 state = 0
 statecount = 0
-binsection = 0
 binfull = ""
 
 for x in range(0, len(snd)):
@@ -43,12 +44,12 @@ for x in range(0, len(snd)):
 			if args['timespace']: # if timespace provided try to guess count
 				statediv = (statecount / timeSpace) # work out the number of samples that fit in to the statecount
 				print "State switch at", x , state , "->" , cstate, "samples since last switch", statecount, "possible count", statediv
-				binsection = str(state) * statediv # guessed number of 1/0
+				binfull += str(state) * statediv # guessed number of 1/0
+			if args['manc']:
+				print "MANC"
 			else:
 				print "State switch at", x , state , "->" , cstate, "samples since last switch", statecount
-				binsection = str(state) # number of 1/0 
-
-			binfull += binsection # add to basic ook tracker
+				binfull += str(state) # number of 1/0 
 
 		state = cstate # change the state tracker to the current state 
 		statecount = 0 # reset the statecounter

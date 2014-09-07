@@ -35,6 +35,7 @@ binfull = ""
 wstate = 0
 peak = 0.9
 trough = -0.9
+nposition = 0
 
 for x in range(0, len(snd)):
 	statecount = statecount + 1
