@@ -51,7 +51,7 @@ for x in range(0, len(snd)):
 		statecount = 0
 
 if args['stats']:
-	print "The whole lot: " + binfull
+	print "The whole lot:", binfull
 
 print 'Writing to: ' + outFile
 wavfile.write(outFile, sampFreq, snd)
