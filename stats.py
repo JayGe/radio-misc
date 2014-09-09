@@ -4,14 +4,12 @@
 
 import argparse
 import os.path
-#import binascii
 import sys
 from scipy.io import wavfile
 
 parser = argparse.ArgumentParser(description="Takes a wav file and does some counting")
 
 parser.add_argument('-i', '--infile', help='WAV file to read from', required=True)
-parser.add_argument('-s', '--stats', help='print basic stats (default)', action='store_true')
 parser.add_argument('-m', '--manc', help='print manchester decoding', action='store_true')
 parser.add_argument('-t', '--timespace', help='sample spacing for estimating counts, default 34', nargs='?', const=34, type=int)
 parser.add_argument('-o', '--offset', help='manchester encoding offset, default 40', nargs='?', const=40, type=int)
@@ -47,13 +45,7 @@ if args['manc']:
 		else:
 			binfull += "0"
 	print binfull
-	#wholenumbers = (len(binfull)/8)*8
-	print ''.join(chr(int(binfull[i:i+8], 2)) for i in xrange(0, len(binfull), 8))
-#	for y in range(0,wholenumbers,8):
-#		binpart = binfull[y:y+8]
-		#binpart = "0b" + binfull[y:y+8]
-#		n = int(binpart, 2)
-#		sys.stdout.write(binascii.unhexlify('%x' % n))
+	print "ASCII:", ''.join(chr(int(binfull[i:i+8], 2)) for i in xrange(0, len(binfull), 8))
 
 else:
 	for x in range(1, len(snd)): # starting at 1, might want to start at 0
