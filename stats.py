@@ -4,14 +4,14 @@
 
 import argparse
 import os.path
-import binascii
+#import binascii
 import sys
 from scipy.io import wavfile
 
 parser = argparse.ArgumentParser(description="Takes a wav file and does some counting")
 
 parser.add_argument('-i', '--infile', help='WAV file to read from', required=True)
-parser.add_argument('-s', '--stats', help='print basic stats', action='store_true')
+parser.add_argument('-s', '--stats', help='print basic stats (default)', action='store_true')
 parser.add_argument('-m', '--manc', help='print manchester decoding', action='store_true')
 parser.add_argument('-t', '--timespace', help='sample spacing for estimating counts, default 34', nargs='?', const=34, type=int)
 parser.add_argument('-o', '--offset', help='manchester encoding offset, default 40', nargs='?', const=40, type=int)
@@ -40,41 +40,40 @@ statecount = 0
 binfull = ""
 
 if args['manc']:
-	print "Manchester decoding, offset:", offset, "boundary:", boundary
+	print "Manchester decoding, channel:", channel, "offset:", offset, "boundary:", boundary
 	for x in range(offset,len(snd)-40,boundary):
 		if snd[x][channel] > snd[x+boundary-1][channel]:
 			binfull += "1"
 		else:
 			binfull += "0"
 	print binfull
-	wholenumbers = (len(binfull)/8)*8
-	for y in range(0,wholenumbers,8):
-		binpart = "0b" + binfull[y:y+8]
-		n = int(binpart, 2)
-		sys.stdout.write(binascii.unhexlify('%x' % n))
-			
-	exit()
+	#wholenumbers = (len(binfull)/8)*8
+	print ''.join(chr(int(binfull[i:i+8], 2)) for i in xrange(0, len(binfull), 8))
+#	for y in range(0,wholenumbers,8):
+#		binpart = binfull[y:y+8]
+		#binpart = "0b" + binfull[y:y+8]
+#		n = int(binpart, 2)
+#		sys.stdout.write(binascii.unhexlify('%x' % n))
 
-for x in range(1, len(snd)): # starting at 1, might want to start at 0
-	statecount = statecount + 1
-	if snd[x][channel] > 0:
-		cstate = 1
-	else: 
-		cstate = 0
-	if cstate != state: # If there is a state change
-		if args['stats']:
+else:
+	for x in range(1, len(snd)): # starting at 1, might want to start at 0
+		statecount = statecount + 1
+		if snd[x][channel] > 0:
+			cstate = 1
+		else: 
+			cstate = 0
+		if cstate != state: # If there is a state change
 			if args['timespace']: # if timespace provided try to guess count
 				statediv = (statecount / timeSpace) # work out the number of samples that fit in to the statecount
 				print "State switch at", x , state , "->" , cstate, "samples since last switch", statecount, "possible count", statediv
 				binfull += str(state) * statediv # guessed number of 1/0
-
+	
 			else: # just prints the switches where they happen without sample guess, will always be 101010...
 				print "State switch at", x , state , "->" , cstate, "samples since last switch", statecount
 				binfull += str(state) # number of 1/0 
+	
+			state = cstate # change the state tracker to the current state 
+			statecount = 0 # reset the statecounter
 
-		state = cstate # change the state tracker to the current state 
-		statecount = 0 # reset the statecounter
-
-if args['stats']:
 	print "The whole lot:", binfull
 
