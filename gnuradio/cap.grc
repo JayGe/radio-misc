@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='ASCII'?>
-<?grc format='1' created='3.7.5'?>
+<?grc format='1' created='3.7.6'?>
 <flow_graph>
-  <timestamp>Fri Sep 19 20:27:39 2014</timestamp>
+  <timestamp>Fri Sep 26 19:32:35 2014</timestamp>
   <block>
     <key>options</key>
     <param>
@@ -69,7 +69,7 @@
     <key>variable</key>
     <param>
       <key>id</key>
-      <value>samp_rate</value>
+      <value>freq</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -77,7 +77,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>2000000</value>
+      <value>433000000</value>
     </param>
     <param>
       <key>alias</key>
@@ -85,7 +85,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(16, 85)</value>
+      <value>(10, 169)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -96,7 +96,7 @@
     <key>variable</key>
     <param>
       <key>id</key>
-      <value>freq</value>
+      <value>samp_rate</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -104,7 +104,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>433890000</value>
+      <value>4000000</value>
     </param>
     <param>
       <key>alias</key>
@@ -112,7 +112,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(10, 169)</value>
+      <value>(16, 85)</value>
     </param>
     <param>
       <key>_rotation</key>
