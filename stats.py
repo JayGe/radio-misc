@@ -57,8 +57,8 @@ else:
 		if cstate != state: # If there is a state change
 			if args['timespace']: # if timespace provided try to guess count
 				statediv = (statecount / timeSpace) # work out the number of samples that fit in to the statecount
-				print "State switch at", x , state , "->" , cstate, "samples since last switch", statecount, "possible count", statediv
-				binfull += str(state) * statediv # guessed number of 1/0
+				print "State switch at", x , state , "->" , cstate, "samples since last switch", statecount, "possible count", statediv+1, "=", str(state) * (statediv+1)
+				binfull += str(state) * (statediv+1) # guessed number of 1/0 + 1 so no * 0
 	
 			else: # just prints the switches where they happen without sample guess, will always be 101010...
 				print "State switch at", x , state , "->" , cstate, "samples since last switch", statecount
