@@ -15,7 +15,7 @@ parser = argparse.ArgumentParser(description="Turns power switches on or off wit
 
 parser.add_argument('-b', '--button', help='Button number|state eg: 00 01 10 11 20 21', required=True)
 parser.add_argument('-r', '--retransmit', help='Retransmit times', nargs='?', const=10, type=int)
-parser.add_argument('-f', '--frequency', help='Frequency', nargs='?', const=433805000, type=int)
+parser.add_argument('-f', '--frequency', help='Frequency hz', nargs='?', const=433805000, type=int)
 parser.set_defaults(frequency=433805000, retransmit=10)
 args = vars(parser.parse_args())
 
@@ -34,5 +34,6 @@ d.setMdmDRate((int)(1.0/0.000450))
 
 for i in range(1, retr):
 	d.RFxmit(signal)
-	d.setModeIDLE()
+
+d.setModeIDLE()
 
