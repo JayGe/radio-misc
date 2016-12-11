@@ -2,7 +2,6 @@
 # script for controlling the power switches with rfcat
 
 from rflib import *
-from time import *
 import argparse
 
 button = {'01': '\xaf\xe0\x22\x2a\x8a\x28\xaa\x2a\xa2\x22\x8a\x28\x88\xa2\x22\x8a\x8a\x20',
